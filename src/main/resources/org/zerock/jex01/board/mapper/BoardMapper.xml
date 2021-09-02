@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.jex01.board.mapper.BoardMapper"> <!-- namespace 이름맞추기가 중요함 -->
+
+    <insert id="insert"> <!-- 원래는 resultType에 java.lang.String으로 적어야 하지만 통칭 string 으로 가능 -->
+        insert into tbl_board (title,content,writer)
+        values(#{title},#{content},#{writer})
+
+        <selectKey order="AFTER" resultType="long" keyProperty="bno">
+            select last_insert_id() <!-- 마지막으로 insert한 후 order에 맞게 insert한 숫자를 select함 -->
+        </selectKey>
+    </insert>
+
+    <select id="getList" resultType="org.zerock.jex01.board.domain.Board"> <!-- 아직 pagizing 처리 디테일하게 x -->
+        select * from tbl_board
+        <!-- separator는 반복이 끝나는 구간마다 " OR "를 넣으라는 의미 -->
+        <foreach collection="arr" item="item" separator=" OR " open="WHERE (" close=")">
+            <if test="item == 'T'.toString()">
+                title like concat('%', #{keyword}, '%')
+            </if>
+            <if test="item == 'C'.toString()">
+                content like concat('%', #{keyword}, '%')
+            </if>
+            <if test="item == 'W'.toString()">
+                writer like concat('%', #{keyword}, '%')
+            </if>
+        </foreach>
+
+        order by bno desc limit #{skip},#{size}
+    </select>
+
+    <select id="getCount" resultType="int">
+        select count(bno) from tbl_board
+    </select>
+
+    <select id="select" resultType="org.zerock.jex01.board.domain.Board">
+        select * from tbl_board where bno = #{bno}
+    </select>
+
+    <delete id="delete">
+        delete from tbl_board where bno = #{bno}
+    </delete>
+
+    <update id="update">
+        update tbl_board set title = #{title}, content = #{content}, modDate = now()
+        where bno = #{bno}
+    </update>
+
+
+
+</mapper>
+
+        <!-- 자바소스 파일 패키지에 xml 파일을 넣는 것은 흔치 않은 일이다. -->
