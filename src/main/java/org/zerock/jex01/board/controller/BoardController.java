@@ -93,9 +93,15 @@ public class BoardController {
             log.info("success");
             redirectAttributes.addFlashAttribute("result", "modified");
         }
-        redirectAttributes.addAttribute("bno", boardDTO.getBno());
+        redirectAttributes.addAttribute("bno", boardDTO.getBno()); //flash가 아닌 계속 bno를 가지고 있게함
         redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
-        redirectAttributes.addAttribute("size", pageRequestDTO.getSize());//flash가 아닌 계속 bno를 가지고 있게함
+        redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
+
+        if (pageRequestDTO.getType() != null) {
+            redirectAttributes.addAttribute("type", pageRequestDTO.getType());
+            redirectAttributes.addAttribute("keyword", pageRequestDTO.getKeyword());
+        }
+
         return "redirect:/board/read";
     }
 }

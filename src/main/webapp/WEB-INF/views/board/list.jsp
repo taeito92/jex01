@@ -64,8 +64,35 @@
                                     </c:forEach>
                                     </tbody>
                                 </table>
+                                <form action="/board/list" method="get">
+                                    <input type="hidden" name="page" value="1">
+                                    <input type="hidden" name="size" value="${pageMaker.size}">
+                                    <div class="col-sm-3">
+                                        <!-- select -->
+                                        <div class="form-group">
+                                            <label>Search</label>
+                                            <select name="type" class="custom-select">
+                                                <option value="">---</option>
+                                                <option value="TCW" ${pageRequestDTO.type == "TCW" ? 'selected' : ''}>전체</option>
+                                                <option value="T" ${pageRequestDTO.type == "T" ? 'selected' : ''}>제목</option>
+                                                <option value="TC" ${pageRequestDTO.type == "TC" ? 'selected' : ''}>제목/내용</option>
+                                                <option value="W" ${pageRequestDTO.type == "W" ? 'selected' : ''}>작성자</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control" name="keyword" value="${pageRequestDTO.keyword}">
+                                            <span class="input-group-append">
+                                                <button type="submit" class="btn btn-info btn-flat">Go!</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                             <!-- /.card-body -->
+
+
                             <div class="card-footer clearfix">
 
                                 <ul class="pagination pagination-sm m-0 float-right">
@@ -123,6 +150,12 @@
 <form id="actionForm" action="/board/list" method="get">
     <input type="hidden" name="page" value="${pageMaker.page}">
     <input type="hidden" name="size" value="${pageMaker.size}">
+
+    <!-- 검색조건 따라 붙게하는 코드 -->
+    <c:if test="${pageRequestDTO.type != null}">
+    <input type="hidden" name="type" value="${pageRequestDTO.type}">
+    <input type="hidden" name="keyword" value="${pageRequestDTO.keyword}">
+    </c:if>
 </form>
 
 
@@ -156,6 +189,7 @@
         actionForm.submit();
 
     }
+
 
 
 

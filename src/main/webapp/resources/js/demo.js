@@ -7,7 +7,7 @@
 
 /* eslint-disable camelcase */
 
-(function ($) {
+(function ($) { //즉시 실행 함수
   'use strict'
 
   function capitalizeFirstLetter(string) {

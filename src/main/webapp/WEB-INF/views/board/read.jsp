@@ -78,6 +78,12 @@
 <form id="actionForm" action="/board/list" method="get">
     <input type="hidden" name="page" value="${pageRequestDTO.page}">
     <input type="hidden" name="size" value="${pageRequestDTO.size}">
+
+    <!-- 검색조건 따라 붙게하는 코드 -->
+    <c:if test="${pageRequestDTO.type != null}">
+        <input type="hidden" name="type" value="${pageRequestDTO.type}">
+        <input type="hidden" name="keyword" value="${pageRequestDTO.keyword}">
+    </c:if>
 </form>
 
 <%@include file="../includes/footer.jsp"%>
@@ -101,7 +107,37 @@
     })
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/resources/js/reply.js"> //js 로딩 </script>
 
+<script>
+
+    function after(result) {
+        console.log("after..........");
+        console.log(result)
+    }
+
+    //reply.js를 로딩하면서 doA와 doB를 가져옴
+    //doA만 부른다면 promise(약속어음) 형식으로 돌아온다.
+    //promise를 다시 doA로 출력시키려면 then을 이용해야 함.(그 안에는 함수가 들어감)
+    //doA().then(result => console.log(result));
+
+    //doB(after)
+
+    //axios로 보냈다면 json으로 data가 왔을 것임. java 객체로 보냈다고 하더라도.
+    //const reply = {bno:230, replyer:'user00',reply:'22222222'}
+
+    //doC(reply).then(result => console.log(result))
+
+    //delete
+    //doD(112).then(result => console.log(result))
+
+    //put
+    const reply = {rno:112, reply:"Update reply text...."}
+    doE(reply).then(result => console.log(result))
+
+
+</script>
 </body>
 </html>
 

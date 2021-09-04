@@ -26,6 +26,13 @@ public class PageRequestDTO {
         return (page - 1) * size; //skip해야하는 int를 구하는 메서드
     }
 
+    public String getType() { //sql if 조건을위해 type이 존재하는지 빈란인지 식별한
+        if (type == null || type.trim().length() == 0) {
+            return null;
+        }
+        return this.type;
+    }
+
     public String[] getArr() {
         return type == null? new String[]{} : type.split("");
     }

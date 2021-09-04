@@ -38,6 +38,10 @@
                         <form id="form1">
                             <input type="hidden" name="page" value="${pageRequestDTO.page}">
                             <input type="hidden" name="size" value="${pageRequestDTO.size}">
+                            <c:if test="${pageRequestDTO.type != null}">
+                                <input type="hidden" name="type" value="${pageRequestDTO.type}">
+                                <input type="hidden" name="keyword" value="${pageRequestDTO.keyword}">
+                            </c:if>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="exampleInputEmail10">BNO</label>
@@ -82,6 +86,12 @@
 <form id="actionForm" action="/board/list" method="get">
     <input type="hidden" name="page" value="${pageRequestDTO.page}">
     <input type="hidden" name="size" value="${pageRequestDTO.size}">
+
+    <!-- 검색조건 따라 붙게하는 코드 -->
+    <c:if test="${pageRequestDTO.type != null}">
+        <input type="hidden" name="type" value="${pageRequestDTO.type}">
+        <input type="hidden" name="keyword" value="${pageRequestDTO.keyword}">
+    </c:if>
 </form>
 
 <%@include file="../includes/footer.jsp"%>

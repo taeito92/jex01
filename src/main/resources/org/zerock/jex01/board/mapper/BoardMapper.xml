@@ -13,9 +13,9 @@
         </selectKey>
     </insert>
 
-    <select id="getList" resultType="org.zerock.jex01.board.domain.Board"> <!-- 아직 pagizing 처리 디테일하게 x -->
-        select * from tbl_board
+    <sql id="search"> <!-- sql에 구멍을 내는 것 -->
         <!-- separator는 반복이 끝나는 구간마다 " OR "를 넣으라는 의미 -->
+        <if test="type != null">
         <foreach collection="arr" item="item" separator=" OR " open="WHERE (" close=")">
             <if test="item == 'T'.toString()">
                 title like concat('%', #{keyword}, '%')
@@ -27,12 +27,21 @@
                 writer like concat('%', #{keyword}, '%')
             </if>
         </foreach>
+        </if>
+    </sql>
+
+    <select id="getList" resultType="org.zerock.jex01.board.domain.Board"> <!-- 아직 pagizing 처리 디테일하게 x -->
+        select * from tbl_board
+
+        <include refid="search"></include> <!-- 위에 id가 search인 sql문을 삽입 -->
 
         order by bno desc limit #{skip},#{size}
     </select>
 
     <select id="getCount" resultType="int">
         select count(bno) from tbl_board
+
+        <include refid="search"></include>
     </select>
 
     <select id="select" resultType="org.zerock.jex01.board.domain.Board">
@@ -47,8 +56,6 @@
         update tbl_board set title = #{title}, content = #{content}, modDate = now()
         where bno = #{bno}
     </update>
-
-
 
 </mapper>
 
