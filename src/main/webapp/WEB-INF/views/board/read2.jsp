@@ -96,7 +96,7 @@
                             </div>
                             <!--/.replies -->
                         </div>
-                     </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -169,9 +169,8 @@
 </div>
 <!-- /.modal -->
 
-
-
 <%@include file="../includes/footer.jsp"%>
+
 
 <script>
 
@@ -201,153 +200,29 @@
         console.log("after..........");
         console.log(result)
     }
-/*
+    /*
 
-    // reply.js를 로딩하면서 doA와 doB를 가져옴
-    // doA만 부른다면 promise(약속어음) 형식으로 돌아온다.
-    // promise를 다시 doA로 출력시키려면 then을 이용해야 함.(그 안에는 함수가 들어감)
-    doA().then(result => console.log(result));
+        // reply.js를 로딩하면서 doA와 doB를 가져옴
+        // doA만 부른다면 promise(약속어음) 형식으로 돌아온다.
+        // promise를 다시 doA로 출력시키려면 then을 이용해야 함.(그 안에는 함수가 들어감)
+        doA().then(result => console.log(result));
 
-    doB(after)
+        doB(after)
 
-    // axios로 보냈다면 json으로 data가 왔을 것임. java 객체로 보냈다고 하더라도.
-    const reply = {bno:230, replyer:'user00',reply:'22222222'}
+        // axios로 보냈다면 json으로 data가 왔을 것임. java 객체로 보냈다고 하더라도.
+        const reply = {bno:230, replyer:'user00',reply:'22222222'}
 
-    doC(reply).then(result => console.log(result))
+        doC(reply).then(result => console.log(result))
 
-    // delete
-    doD(112).then(result => console.log(result))
+        // delete
+        doD(112).then(result => console.log(result))
 
-    // put(추가/수정)
-    const reply = {rno:112, reply:"Update reply text...."}
-    doE(reply).then(result => console.log(result))
-*/
+        // put(추가/수정)
+        const reply = {rno:112, reply:"Update reply text...."}
+        doE(reply).then(result => console.log(result))
+    */
 
     //즉시 실행함수가 아닌 일반 함수로 정의한 이유 ? 댓글 추가 중 다른 사람이 댓글을 추가한 경우 다시 그 목록을 출력해야함
     // -> 추가할 때 마다 리스트를 가져오는게 좋으므로
-    function getList() {
-        const target = document.querySelector(".direct-chat-messages")
-        const bno = '${boardDTO.bno}' //지금 해당 게시물의 번호
-        function convertTemplate (replyObj) {
-
-            console.log(replyObj)
-
-            const {rno,bno,reply,replyer,replyDate,modDate}  = {...replyObj}
-
-            const template = `<div class="direct-chat-msg">
-                <div class="direct-chat-infos clearfix">
-                    <span class="direct-chat-name float-left">\${rno} -- \${replyer}</span>
-                    <span class="direct-chat-timestamp float-right">\${replyDate}</span>
-                </div>
-                <div class="direct-chat-text" data-rno='\${rno}' data-replyer='\${replyer}'>
-                    \${reply}
-                </div>
-            </div>`
-            return template
-        }
-
-        getReplyList(bno).then(data => {
-            console.log(data) //array
-            let str = "";
-            data.forEach(reply => {
-                str += convertTemplate(reply)
-            })
-            target.innerHTML = str
-        })
-    }
-
-    //최초 실행 -> 즉시실행함수
-    (function () {
-        getList()
-    })()
-
-    //jQuery style
-    //small modal를 변수로 저장
-    const modalDiv = $('#modal-sm')
-
-    let oper = null
-
-    document.querySelector('.addReplyBtn').addEventListener("click", function () {
-
-        oper = 'add' //댓글을 추가할꺼니까 oper를 add로 설정
-        modalDiv.modal('show')
-
-    },false)
-
-    //버튼 누른 경우
-    document.querySelector(".operBtn").addEventListener("click", function () {
-
-        const bno = '${boardDTO.bno}'
-        const replyer = document.querySelector("input[name='replyer']").value //jQuery
-        const reply = document.querySelector("input[name='reply']").value
-
-        if(oper === 'add') {
-            const replyObj = {bno:bno, replyer:replyer, reply:reply} //키값 할당
-            console.log(replyObj)
-            addReply(replyObj).then(result => {
-                getList() //갱신목적 함수
-                modalDiv.modal('hide')
-                document.querySelector("input[name='replyer']").value = ""
-                document.querySelector("input[name='reply']").value = ""
-            })
-        }
-
-    },false)
-    //수정,삭제 DOM
-    const modModal = $("#modal-lg")
-    const modReplyer = document.querySelector("input[name='replyerMod']")
-    const modReply = document.querySelector("input[name='replyMod']")
-    const modRno = document.querySelector("input[name='rno']")
-
-    document.querySelector(".direct-chat-messages").addEventListener("click", (e) => {
-
-        const target = e.target
-        const bno = '${boardDTO.bno}'
-        if (target.matches(".direct-chat-text")) {
-            const rno = target.getAttribute("data-rno")
-            const replyer = target.getAttribute("data-replyer")
-            const reply = target.innerHTML
-
-            console.info(reply)
-
-            console.log(rno, replyer, reply, bno)
-            modRno.value = rno
-            modReplyer.value = replyer
-            modReply.value = reply
-
-            modModal.modal('show')
-
-            document.querySelector(".btnRem").setAttribute("data-rno", rno)
-
-            modModal.modal('show')
-        }
-    },false)
-
-    document.querySelector(".btnRem").addEventListener("click" ,(e) => {
-        const rno = e.target.getAttribute("data-rno")
-
-        removeReply(rno).then(result => {
-            getList()
-
-            modModal.modal('hide');
-        })
-    },false)
-
-    document.querySelector(".btnModReply").addEventListener("click" , (e) => {
-        const replyObj = {rno:modRno.value, reply:modReply.value}
-
-        modifyReply(replyObj).then(result => {
-            getList()
-
-            modModal.modal("hide")
-        })
-
-    },false)
-
-
-
 
 </script>
-</body>
-</html>
-

@@ -58,6 +58,7 @@
                                     <tr>
                                         <td><c:out value="${dto.bno}"></c:out></td> <!-- c:out을 쓰는 이유 보안성 문제 -->
                                         <td><a href="javascript:moveRead(${dto.bno})"><c:out value="${dto.title}"></c:out></a></td>
+                                        <!-- a태그 안에서 js를 이용하여 read.jsp로 이동 -->
                                         <td><c:out value="${dto.writer}"></c:out></td>
                                         <td><c:out value="${dto.regDate}"></c:out></td>
                                     </tr>
@@ -73,7 +74,7 @@
                                             <label>Search</label>
                                             <select name="type" class="custom-select">
                                                 <option value="">---</option>
-                                                <option value="TCW" ${pageRequestDTO.type == "TCW" ? 'selected' : ''}>전체</option>
+                                                <option value="TCW" ${pageRequestDTO.type == "TCW" ? 'selected' : ''}>전체</option> <!-- selected는 고정하는것 -->
                                                 <option value="T" ${pageRequestDTO.type == "T" ? 'selected' : ''}>제목</option>
                                                 <option value="TC" ${pageRequestDTO.type == "TC" ? 'selected' : ''}>제목/내용</option>
                                                 <option value="W" ${pageRequestDTO.type == "W" ? 'selected' : ''}>작성자</option>
@@ -124,28 +125,28 @@
         <!-- /.content -->
     </div>
 
+<%-- modal start --%>
 <div class="modal fade" id="modal-sm">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Small Modal</h4>
+                <h4 class="modal-title">알림창</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>One fine body&hellip;</p>
+                <p>처리되었습니다</p>
             </div>
             <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary">확인</button>
             </div>
         </div>
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
+<!-- /.modal exd-->
 
 <form id="actionForm" action="/board/list" method="get">
     <input type="hidden" name="page" value="${pageMaker.page}">
@@ -184,14 +185,9 @@
     function moveRead(bno) {
 
         actionForm.setAttribute("action","/board/read") //action에 list였던 것을 read로 이동
-        actionForm.innerHTML += `<input type='hidden' name='bno' value='\${bno}'>`
-
-        actionForm.submit();
-
+        actionForm.innerHTML += `<input type='hidden' name='bno' value='\${bno}'>` //위에서 bno를 물고 가지는 않으므로 bno값을 따로 전해줌
+        actionForm.submit(); //innerHTML한 후 submit으로 적용
     }
-
-
-
 
 </script>
 

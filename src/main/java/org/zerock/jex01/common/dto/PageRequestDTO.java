@@ -17,7 +17,7 @@ public class PageRequestDTO {
     @Builder.Default
     private int size = 10;
 
-    //검색하기위한 컨텐츠 type과 검색하려는 keyword
+    //검색하기위한 컨텐츠 type과 검색하려는 keyword 공통으로 제공하기 위해서 PageRequestDTO에서 선언
     private String type;
     private String keyword;
 
@@ -27,7 +27,7 @@ public class PageRequestDTO {
     }
 
     public String getType() { //sql if 조건을위해 type이 존재하는지 빈란인지 식별한
-        if (type == null || type.trim().length() == 0) {
+        if (type == null || type.trim().length() == 0) { //trim은 공백을 제거하는 메서드
             return null;
         }
         return this.type;
@@ -35,6 +35,6 @@ public class PageRequestDTO {
 
     public String[] getArr() {
         return type == null? new String[]{} : type.split("");
-    }
+    } //split 기준으로 자르고 문자열로 저장(검색 좀 더 해볼 것)
 
 }

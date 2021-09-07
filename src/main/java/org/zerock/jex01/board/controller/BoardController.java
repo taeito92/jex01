@@ -67,7 +67,7 @@ public class BoardController {
         model.addAttribute("pageMaker", new PageMaker(page, size, total));
     }
 
-    @GetMapping(value = {"/read","/modify"}) //집합으로 표현 가능함-> 메서드 리팩토링
+    @GetMapping(value = {"/read","/modify", "/read2"}) //집합으로 표현 가능함-> 메서드 리팩토링
     public void read(Long bno, PageRequestDTO pageRequestDTO, Model model) {
         log.info("=============c        getRead==================" + bno);
         log.info("=============c        getRead==================" + pageRequestDTO);

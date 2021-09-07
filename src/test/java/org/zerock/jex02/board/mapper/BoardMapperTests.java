@@ -46,6 +46,7 @@ public class    BoardMapperTests {
         log.info(pageRequestDTO);
 
         boardMapper.getList(pageRequestDTO).forEach(board -> log.info(board));
+
     }
 
     @Test
