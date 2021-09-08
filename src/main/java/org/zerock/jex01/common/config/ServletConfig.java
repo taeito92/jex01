@@ -15,7 +15,7 @@ import org.zerock.jex01.common.converter.StringToLocalDateTimeConverter;
 
 @EnableWebMvc //configuration 설정 포함됨.
 @Import(BoardServletConfig.class) //로딩될때 BoardServletConfig도 같이 로딩하기 위해서 import
-@ComponentScan(basePackages = "org.zerock.jex01.common.exception")
+@ComponentScan(basePackages = {"org.zerock.jex01.common.exception","org.zerock.jex01.common.controller"})
 public class ServletConfig implements WebMvcConfigurer {
     //이해 필요 코드
     @Override

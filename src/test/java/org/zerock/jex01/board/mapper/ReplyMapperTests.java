@@ -1,4 +1,4 @@
-package org.zerock.jex02.board.mapper;
+package org.zerock.jex01.board.mapper;
 
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zerock.jex01.board.config.BoardRootConfig;
 import org.zerock.jex01.board.domain.Reply;
-import org.zerock.jex01.board.mapper.ReplyMapper;
 import org.zerock.jex01.common.config.RootConfig;
 
 import java.util.stream.IntStream;

@@ -4,10 +4,9 @@ package org.zerock.jex01.common.config;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import org.zerock.jex01.board.config.BoardRootConfig;
-import org.zerock.jex01.board.config.BoardServletConfig;
 
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
 
 @Log4j2
@@ -40,6 +39,11 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
         //URL를 잘못작성한 경우 발생한 예외를 찾아서 예외처리 하는 exception으로 보내는 것
+
+        MultipartConfigElement multipartConfigElement
+                = new MultipartConfigElement("C:\\upload\\temp", 1024*1024*10, 1024*1024*20, 1024*1024*1);
+        registration.setMultipartConfig(multipartConfigElement);
+
     }
 
     @Override
@@ -51,4 +55,5 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 
         return new Filter[]{utf8Filter}; //get방식은 한글이 처리 안될 수 있음
     }
+
 }

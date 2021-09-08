@@ -1,6 +1,8 @@
 package org.zerock.jex01.board.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.zerock.jex01.board.domain.Board;
+import org.zerock.jex01.board.domain.BoardAttach;
 import org.zerock.jex01.common.dto.PageRequestDTO;
 
 import java.util.List;
@@ -22,7 +24,9 @@ public interface BoardMapper {
 
     int update(Board board);
 
+    //마이바티스에서는 파라미터를 하나밖에 받지 못하지만 @Param을 이용하여 파라미터를 2개 받음
+    int updateReplyCnt(@Param("bno") Long bno,@Param("num") int num);
 
-
+    int insertAttach(BoardAttach boardAttach);
 
 }

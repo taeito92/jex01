@@ -25,7 +25,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/time")
-    public void getTime(Model model){
+    public void getTime(Model model) {
 
         log.info("==============controller getTime==================");
 
@@ -39,7 +39,7 @@ public class BoardController {
     }
 
     @PostMapping("/register")
-    public String registerPost(BoardDTO boardDTO, RedirectAttributes redirectAttributes){
+    public String registerPost(BoardDTO boardDTO, RedirectAttributes redirectAttributes) {
         log.info("==============c        postRegister==================");
         log.info("boardDTO : " + boardDTO);
 
@@ -67,7 +67,7 @@ public class BoardController {
         model.addAttribute("pageMaker", new PageMaker(page, size, total));
     }
 
-    @GetMapping(value = {"/read","/modify", "/read2"}) //집합으로 표현 가능함-> 메서드 리팩토링
+    @GetMapping(value = {"/read", "/modify", "/read2"}) //집합으로 표현 가능함-> 메서드 리팩토링
     public void read(Long bno, PageRequestDTO pageRequestDTO, Model model) {
         log.info("=============c        getRead==================" + bno);
         log.info("=============c        getRead==================" + pageRequestDTO);

@@ -6,7 +6,11 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.zerock.jex01.board.config.BoardRootConfig;
 
 import javax.sql.DataSource;
@@ -14,6 +18,7 @@ import java.util.ArrayList;
 
 @Configuration //java파일로 xml처럼 설정하는 방법
 @Import(BoardRootConfig.class) //따로 로딩해도 되나 같이 로딩하는게 좋음
+@EnableTransactionManagement
 public class RootConfig {
 
     //한번만 하는 설정
@@ -43,6 +48,11 @@ public class RootConfig {
         HikariDataSource dataSource = new HikariDataSource(config);
 
         return dataSource;
+    }
+
+    @Bean
+    public TransactionManager transactionManager() {
+        return new DataSourceTransactionManager(dataSource());
     }
 
     @Bean(name = "names") //bean을 설정시키도록 하는 어노테이션,대부분은 이름을 메서드의 이름과 일치시킴

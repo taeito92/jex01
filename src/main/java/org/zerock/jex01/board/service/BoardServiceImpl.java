@@ -25,6 +25,14 @@ public class BoardServiceImpl implements BoardService{
 
         boardMapper.insert(board);
 
+        Long bno = board.getBno();
+
+        //bno는 게시글이 등록할 때 만들어지므로 따로 bno를 넣어주어야함.
+        board.getAttachList().forEach(boardAttach -> {
+            boardAttach.setBno(bno);
+            boardMapper.insertAttach(boardAttach);
+        });
+
         return board.getBno();
     }
 
