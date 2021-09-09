@@ -25,8 +25,9 @@ public class BoardDTO {
     private String writer;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
+    private int replyCnt;
 
-    @Builder.Default
+    @Builder.Default //기본값이 null이 아니라 기본 배열로 설정
     private List<UploadResponseDTO> files = new ArrayList<>();
 
     //dto를 vo로 변환
@@ -38,8 +39,10 @@ public class BoardDTO {
                 .writer(writer)
                 .regDate(regDate)
                 .modDate(modDate)
+                .replyCnt(replyCnt)
                 .build();
 
+        //files에 attach(한 게시글에 2개 이상 파일을 올리는 경우가 있으므로)가 uploadResponseDTO로 변환하는 반복문
         files.forEach(uploadResponseDTO -> {
             BoardAttach attach = BoardAttach.builder()
                     .fileName(uploadResponseDTO.getFileName())

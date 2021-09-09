@@ -16,12 +16,13 @@ public class UploadResponseDTO {
     private boolean image;
     private String uploadPath;
 
-    public String getThumbnail(){ //썸네일 주소를 리턴
-        return uploadPath+"/s_"+uuid+"_"+fileName;
+    public String getThumbnail() { //썸네일 주소를 리턴
+        return uploadPath + "/s_" + uuid + "_" + fileName;
     }
 
-    public String getFileLink(){ //원본 파일 주소를 리턴
-        return uploadPath+"/"+uuid+"_"+fileName;
+    public String getFileLink() { //원본 파일 주소를 리턴 //
+        // 사실 특별한 장치
+        return uploadPath + "/" + uuid + "_" + fileName;
     }
 
 }

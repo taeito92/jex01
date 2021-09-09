@@ -87,12 +87,20 @@ public class BoardController {
 
     @PostMapping("/modify")
     public String modify(BoardDTO boardDTO, PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
-        log.info("=============c        postModify==================" + boardDTO);
+        log.info("===============================");
+        log.info("===============================");
+        log.info("===============================");
+        log.info(boardDTO);
+        log.info("===============================");
+        log.info("===============================");
+        log.info("===============================");
 
-        if (boardService.modify(boardDTO)) {
-            log.info("success");
-            redirectAttributes.addFlashAttribute("result", "modified");
-        }
+
+        //if (boardService.modify(boardDTO)) {
+        //    log.info("success");
+        //    redirectAttributes.addFlashAttribute("result", "modified");
+        //
+        // }
         redirectAttributes.addAttribute("bno", boardDTO.getBno()); //flash가 아닌 계속 bno를 가지고 있게함
         redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
         redirectAttributes.addAttribute("size", pageRequestDTO.getSize());

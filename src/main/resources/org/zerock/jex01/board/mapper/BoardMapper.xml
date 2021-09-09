@@ -44,8 +44,32 @@
         <include refid="search"></include>
     </select>
 
-    <select id="select" resultType="org.zerock.jex01.board.domain.Board">
-        select * from tbl_board where bno = #{bno}
+    <resultMap id="boardMap" type="org.zerock.jex01.board.domain.Board">
+        <!-- board의 bno와 attach의 bno의 구분이 필요함 -->
+        <id property="bno" column="bno"></id>
+        <result property="title" column="title"></result> <!-- board에만 존재하는 컬럼 -->
+        <result property="content" column="content"></result>
+        <result property="writer" column="writer"></result>
+        <result property="regDate" column="regDate"></result>
+        <result property="modDate" column="modDate"></result>
+        <result property="replyCnt" column="replyCnt"></result>
+
+        <collection property="attachList" resultMap="attachMap" ></collection> <!-- 우리가 선언한 list의 이름은 attachList -->
+    </resultMap>
+
+    <resultMap id="attachMap" type="org.zerock.jex01.board.domain.BoardAttach">
+        <result property="uuid" column="uuid"></result>
+        <result property="bno" column="bno"></result>
+        <result property="fileName" column="fileName"></result>
+        <result property="path" column="path"></result>
+        <result property="image" column="image"></result>
+    </resultMap>
+
+    <select id="select" resultMap="boardMap"> <!-- sql처리후 위에 resultMap의 형식으로 가져오겠다 -->
+        select *
+        from
+            tbl_board board left join tbl_attach ta on board.bno = ta.bno
+        where board.bno = #{bno}
     </select>
 
     <delete id="delete">
@@ -66,6 +90,8 @@
         insert into tbl_attach (uuid, bno, path, filename, image)
         values (#{uuid}, #{bno}, #{path}, #{fileName}, #{image})
     </insert>
+
+
 
 
 </mapper>

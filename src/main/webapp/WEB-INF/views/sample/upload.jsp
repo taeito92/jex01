@@ -60,13 +60,19 @@
 
     }, false)
 
-    function removeFile(fileLink, ele){
+    function removeFile(fileLink, ele) {
         console.log(fileLink)
-       axios.post("/removeFile", {fileName:fileLink}).then(response => {
-           const targetDiv = ele.parentElement
-           targetDiv.remove()
-       })
+        axios.post("/removeFile", {fileName: fileLink}).then(response => {
+            const targetDiv = ele.parentElement
+            targetDiv.remove()
+        })
     }
 </script>
 </body>
 </html>
+
+
+<%--
+@RequestBody 는 HTTP 요청의 바디내용을 자바객체로 변환
+@ResponseBody 는 자바객체를 HTTP 요청의 바디내용으로 변환
+--%>

@@ -67,6 +67,9 @@
                                 </div>
                             </div>
                             <!-- /.card-body -->
+                            <div class="temp">
+
+                            </div>
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary btnList" style="float:left">목록</button>
@@ -74,8 +77,34 @@
                                 <button type="submit" class="btn btn-warning btnMod" style="float:right">수정</button>
                             </div>
                         </form>
+
                     </div>
+
+                    <label for="exampleInputFile">File input</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" name="uploadFiles" class="custom-file-input" id="exampleInputFile" multiple>
+                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                        </div>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="uploadBtn">Upload</span>
+                        </div>
+                    </div>
+
                     <!-- /.card -->
+                    <div class="uploadResult">
+                        <c:forEach items="${boardDTO.files}" var="attach">
+                            <div data-uuid="${attach.uuid}" data-filename="${attach.fileName}" data-uploadpath="${attach.uploadPath}" data-image="${attach.image}">
+                                <c:if test="${attach.image}">
+                                    <img src="/viewFile?file=${attach.getThumbnail()}">
+                                </c:if>
+                                <span>${attach.fileName}</span>
+                                <button onclick="javascript:removeDiv(this)">X</button>
+                            </div>
+
+                        </c:forEach>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -137,11 +166,83 @@
         e.preventDefault();
         e.stopPropagation();
 
+        const fileDivArr = uploadResultDiv.querySelectorAll("div")
+
+        if(fileDivArr && fileDivArr.length > 0){
+            let str = "";
+            for (let i = 0; i < fileDivArr.length; i++) {
+                const target = fileDivArr[i]
+                const uuid = target.getAttribute("data-uuid")
+                const fileName = target.getAttribute("data-filename")
+                const uploadPath = target.getAttribute("data-uploadpath")
+                const image = target.getAttribute("data-image")
+
+                str += `<input type='hidden' name='files[\${i}].uuid' value='\${uuid}'>`
+                str += `<input type='hidden' name='files[\${i}].fileName' value='\${fileName}'>`
+                str += `<input type='hidden' name='files[\${i}].uploadPath' value='\${uploadPath}'>`
+                str += `<input type='hidden' name='files[\${i}].image' value='\${image}'>`
+            }
+
+            document.querySelector(".temp").innerHTML = str
+        }//end if
+
         form.setAttribute("action","/board/modify")
         form.setAttribute("method", "post")
-        form.submit();
+        // form.submit();
 
     },false);
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const uploadResultDiv = document.querySelector(".uploadResult")
+
+    document.querySelector("#uploadBtn").addEventListener("click", (e) => {
+
+        const formData = new FormData()
+        const fileInput = document.querySelector("input[name='uploadFiles']")
+
+        for (let i = 0; i < fileInput.files.length; i++) {
+
+            //console.log(fileInput.files[i])
+            formData.append("uploadFiles", fileInput.files[i])
+        }
+
+        console.log(formData)
+
+        const headerObj = {headers: {'Content-Type': 'multipart/form-data'}}
+
+        axios.post("/upload", formData, headerObj).then((response) => {
+            const arr = response.data
+            console.log(arr)
+            let str = ""
+            for (let i = 0; i < arr.length; i++) {
+                const {uuid, fileName, uploadPath, image, thumbnail, fileLink} = {...arr[i]}
+
+                if (image) {
+                    str += `<div data-uuid='\${uuid}' data-filename='\${fileName}' data-uploadpath ='\${uploadPath}' data-image = '\${image}'><img src='/viewFile?file=\${thumbnail}'/><span>\${fileName}</span>
+                            <button onclick="javascript:removeDiv(this)">X</button></div>`
+                } else {
+                    str += `<div data-uuid='\${uuid}' data-filename='\${fileName}' data-uploadpath ='\${uploadPath}' data-image = '\${image}'><a href='/downFile?file=\${fileLink}'>\${fileName}</a></div>`
+                }
+
+            }//end for
+            uploadResultDiv.innerHTML += str
+
+        })
+
+
+
+    }, false)
+
+    function removeDiv(ele){
+        ele.parentElement.remove()
+    }
+
+
+
+
 
 </script>
 

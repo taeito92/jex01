@@ -66,6 +66,18 @@
                             <button type="button" class="btn btn-info btnMod" style="float:right">수정/삭제</button>
                         </div>
 
+
+                        <div>
+                            <c:forEach items="${boardDTO.files}" var="attach">
+                                <div>
+                                    <c:if test="${attach.image}">
+                                       <img src="/viewFile?file=${attach.getThumbnail()}" onclick="javacript:showOrigin('${attach.getFileLink()}')">
+                                    </c:if>
+                                        ${attach.fileName}
+                                </div>
+                            </c:forEach>
+                        </div>
+
                     </div>
                     <!-- /.card -->
 
@@ -90,8 +102,8 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             <div class="direct-chat-messages">
+                                <!-- /.replies -->
 
-                                <!-- /.direct-chat-msg -->
 
                             </div>
                             <!--/.replies -->
@@ -169,11 +181,29 @@
 </div>
 <!-- /.modal -->
 
+<!-- large modal -->
+<div class="modal fade" id="modal-image">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="targetImage">
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 
 <%@include file="../includes/footer.jsp"%>
 
 <script>
+
+
 
     const actionForm = document.querySelector("#actionForm");
 
@@ -196,6 +226,15 @@
 <script src="/resources/js/reply.js"> //js 로딩 </script>
 
 <script>
+
+    const modalImage = new bootstrap.Modal(document.querySelector('#modal-image'))
+
+    function showOrigin(fileLink){
+
+        document.querySelector("#targetImage").src = `/viewFile?file=\${fileLink}`
+        modalImage.show()
+
+    }
 
     function after(result) {
         console.log("after..........");
