@@ -66,7 +66,20 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public boolean modify(BoardDTO boardDTO) {
-        return boardMapper.update(boardDTO.getDomain()) > 0;
+
+        //전체 attach 파일들 모두 삭제
+        boardMapper.deleteAttach(boardDTO.getBno());
+
+        Board board = boardDTO.getDomain();
+        Long bno = board.getBno();
+
+        //그 후 다시 attach 목록들을 갱신(insert)
+        board.getAttachList().forEach(boardAttach -> {
+            boardAttach.setBno(bno);
+            boardMapper.insertAttach(boardAttach);
+        });
+
+        return boardMapper.update(board) > 0;
     }
 
 

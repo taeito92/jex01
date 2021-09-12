@@ -29,4 +29,6 @@ public interface BoardMapper {
 
     int insertAttach(BoardAttach boardAttach);
 
+    int deleteAttach(Long bno);
+
 }

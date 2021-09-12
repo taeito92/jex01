@@ -91,6 +91,10 @@
         values (#{uuid}, #{bno}, #{path}, #{fileName}, #{image})
     </insert>
 
+    <delete id="deleteAttach">
+        delete from tbl_attach where bno = #{bno}
+    </delete>
+
 
 
 

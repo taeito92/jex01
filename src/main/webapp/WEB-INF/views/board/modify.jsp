@@ -188,7 +188,7 @@
 
         form.setAttribute("action","/board/modify")
         form.setAttribute("method", "post")
-        // form.submit();
+        form.submit();
 
     },false);
 

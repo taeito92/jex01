@@ -91,16 +91,19 @@ public class BoardController {
         log.info("===============================");
         log.info("===============================");
         log.info(boardDTO);
+        if(boardDTO.getFiles().size() > 0) {
+            boardDTO.getFiles().forEach(dto -> log.info(dto));
+        }
         log.info("===============================");
         log.info("===============================");
         log.info("===============================");
 
 
-        //if (boardService.modify(boardDTO)) {
-        //    log.info("success");
-        //    redirectAttributes.addFlashAttribute("result", "modified");
-        //
-        // }
+        if (boardService.modify(boardDTO)) {
+            log.info("success");
+            redirectAttributes.addFlashAttribute("result", "modified");
+         }
+
         redirectAttributes.addAttribute("bno", boardDTO.getBno()); //flash가 아닌 계속 bno를 가지고 있게함
         redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
         redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
