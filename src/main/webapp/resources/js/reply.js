@@ -66,6 +66,10 @@ const getReplyList = async (bno) => {
 
 async function addReply(obj) {
 
+    console.log("addReply..................")
+
+    console.dir(obj)
+
     const response = await axios.post("/replies", obj)
     return response.data
 } //return 방식으로 했기 때문에 다시 obj로 변환이 필요함

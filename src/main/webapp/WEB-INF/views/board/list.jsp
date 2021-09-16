@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="../includes/header.jsp"%>
 
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -39,7 +41,9 @@
                                         <i class="ion ion-clipboard mr-1"></i>
                                         To Do List
                                     </h3>
+                                    <sec:authorize access="isAuthenticated()">
                                     <button type="submit" class="btn btn-primary btnRegister" style="float:right">글쓰기</button>
+                                    </sec:authorize>
                                 </div>
                             </form>
                             <!-- /.card-header -->

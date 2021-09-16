@@ -14,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.zerock.jex01.security.handler.CustomAccessDeniedHandler;
+import org.zerock.jex01.security.handler.CustomAuthenticationEntryPoint;
 import org.zerock.jex01.security.handler.CustomLoginSuccessHandler;
 import org.zerock.jex01.security.service.CustomUserDetailsService;
 
@@ -48,15 +50,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+
+/*
         http.authorizeRequests()
                 .antMatchers("/sample/doAll").permitAll() //doAll에 권한 부여
                 .antMatchers("/sample/doMember").access("hasRole('ROLE_MEMBER')") //권한에  'ROLE_'
                 .antMatchers("/sample/doAdmin").access("hasRole('ROLE_ADMIN')");
+*/
 
         //Login 페이지 호출(custom하지 않으면 자동 생성 -> spring security가 만들어줌)
         http.formLogin().loginPage("/customLogin")
-                .loginProcessingUrl("/login")
-                .successHandler(customLoginSuccessHandler());
+                .loginProcessingUrl("/login");
+                //.successHandler(customLoginSuccessHandler());
                  //post처리는 spring Security에서 처리하게 만드는 코드
 
         //http.logout().invalidateHttpSession(true); //invaild가 default 이므로 logout은 동작함.
@@ -65,12 +70,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.rememberMe().tokenRepository(persistentTokenRepository())
                 .key("zerock").tokenValiditySeconds(60*60*24*30); //한달 동안 로그인 유지
 
+        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
+
+        http.exceptionHandling()
+                .authenticationEntryPoint(customAuthenticationEntryPoint());
+
+    }
+
+    @Bean //일반적인 스프링 스타일 -> 바로 생성하지 않고 bean으로 생성
+    public CustomAccessDeniedHandler customAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
     }
 
     @Bean
     public CustomLoginSuccessHandler customLoginSuccessHandler() {
         return new CustomLoginSuccessHandler();
     }
+
+    @Bean
+    public CustomAuthenticationEntryPoint customAuthenticationEntryPoint() {return new CustomAuthenticationEntryPoint();}
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
